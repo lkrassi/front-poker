@@ -1,38 +1,50 @@
-# sv
+# 🚀 Веб-приложение "Покер" на SvelteKit  
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## 📖 Описание  
+Это веб-приложение, разработанное с использованием **SvelteKit**. Оно включает клиентскую и серверную логику, поддерживает динамическую маршрутизацию и серверный рендеринг.  
 
-## Creating a project
+## 🔧 Требования  
+Перед запуском убедитесь, что у вас установлены:  
+- **Node.js** (рекомендуется версия `18+`)  
+- **npm** или **pnpm**  
 
-If you're seeing this, you've probably already done this step. Congrats!
+## 📥 Установка зависимостей  
+Клонируйте репозиторий и установите зависимости:  
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+```
+git clone https://github.com/lkrassi/front-poker.git
+cd front  
+npm install
 ```
 
-## Developing
+# 🏃 Запуск проекта
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+🔹 1. Режим разработки
 
-```bash
+Запустить локальный сервер:
+
+```
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+После запуска приложение будет доступно по адресу:
+👉 http://localhost:5173 (или другой порт, указанный в консоли)
 
-To create a production version of your app:
+🔹 2. Сборка для продакшена
 
-```bash
+Собрать оптимизированную версию проекта:
+
+```
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+🔹 3. Запуск продакшен-сервера
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+После сборки можно запустить приложение в режиме продакшена:
+
+```
+npm run preview
+```
+
+После запуска приложение будет доступно по адресу:
+👉 http://localhost:4173 (или другой порт, указанный в консоли)
