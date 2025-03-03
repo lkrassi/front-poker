@@ -1,22 +1,28 @@
 <script lang="ts">
 	import { loginUser } from './api/login';
+
 	import Message from '../../components/Message.svelte';
 	import ThemeSwitcher from '../../components/ThemeSwitcher.svelte';
 	import ConfirmEmail from '../../components/ConfirmEmail.svelte';
+	import Loader from '../../components/Loader.svelte';
+
 	import { emailStore } from '../../stores/emailStore';
+	import { isLoading } from '../../stores/loaderStore';
+	import { withLoader } from '$lib/loader';
+
 	import { goto } from '$app/navigation';
 
-	let email = '';
-	let password = '';
-	let message = '';
+	let email: string = '';
+	let password: string = '';
+	let message: string = '';
 	let messageType: 'success' | 'error' | 'info' = 'info';
-	let showConfirmEmail = false;
 
-	const handleSubmit = async () => {
+	let showConfirmEmail: boolean = false;
+
+	const handleSubmit = async (): Promise<void> => {
 		message = '';
-		showConfirmEmail = false;
 
-		const result = await loginUser(email, password);
+		const result = await withLoader(loginUser(email, password));
 
 		if (result.success) {
 			messageType = 'success';
@@ -30,7 +36,7 @@
 				showConfirmEmail = true;
 
 				setTimeout(() => {
-					messageType = 'success';
+					messageType = 'info';
 					message = 'Код подтверждения отправлен на ваш email!';
 				}, 100);
 			} else {
@@ -66,6 +72,10 @@
 
 {#if showConfirmEmail}
 	<ConfirmEmail />
+{/if}
+
+{#if $isLoading}
+	<Loader />
 {/if}
 
 <style lang="scss">
@@ -144,7 +154,7 @@
 						left: 0;
 						bottom: 0;
 						width: 0;
-						height: 2px;
+						height: 1px;
 						background-color: var(--primary-color);
 						transition: width 0.3s ease-in-out;
 					}

@@ -1,20 +1,18 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-
 	type Message = { id: number; type: 'success' | 'error' | 'info'; text: string };
 
 	export let type: 'success' | 'error' | 'info' = 'info';
 	export let message: string = '';
 
 	let messages: Message[] = [];
-	let idCounter = 0;
 
 	const addMessage = () => {
 		if (!message) return;
 
 		if (messages.some((msg) => msg.text === message && msg.type === type)) return;
 
-		const id = idCounter++;
+		const id = Date.now();
+
 		messages = [{ id, type, text: message }, ...messages];
 
 		if (messages.length > 5) {
@@ -22,6 +20,8 @@
 		}
 
 		setTimeout(() => removeMessage(id), 3000);
+
+		message = '';
 	};
 
 	const removeMessage = (id: number) => {
@@ -35,7 +35,9 @@
 
 <div class="message-container">
 	{#each messages as msg (msg.id)}
-		<p class="message {`message--${msg.type}`}" transition:fade>{msg.text}</p>
+		<p class="message {`message--${msg.type}`}">
+			{msg.text}
+		</p>
 	{/each}
 </div>
 
@@ -43,11 +45,10 @@
 	.message-container {
 		position: fixed;
 		bottom: 20px;
-		left: 50%;
-		transform: translateX(-50%);
+		right: 20px;
 		display: flex;
 		flex-direction: column-reverse;
-		align-items: center;
+		align-items: flex-end;
 		gap: 10px;
 		z-index: 9999;
 	}

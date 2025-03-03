@@ -1,14 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Header from '../../components/Header.svelte';
 
-	const clearCookies = () => {
-		const cookiesToClear = ['access_token', 'refresh_token'];
+	import { clearCookies } from '$lib/clearCookies';
 
-		cookiesToClear.forEach((name) => {
-			document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-		});
-	};
+	import { goto } from '$app/navigation';
 
 	const logout = () => {
 		clearCookies();

@@ -3,8 +3,6 @@ import { sendConfirmationCode } from '../../register/api/sendCode';
 export const loginUser = async (email: string, password: string) => {
 	try {
 		const BASE_URL = import.meta.env.VITE_BASE_URL;
-		console.log('Base URL:', import.meta.env.VITE_BASE_URL);
-
 		const res = await fetch(`${BASE_URL}/auth/sign_in`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

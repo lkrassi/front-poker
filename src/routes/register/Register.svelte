@@ -1,27 +1,33 @@
 <script lang="ts">
 	import { registerUser } from './api/register';
+
 	import Message from '../../components/Message.svelte';
 	import ThemeSwitcher from '../../components/ThemeSwitcher.svelte';
 	import ConfirmEmail from '../../components/ConfirmEmail.svelte';
+	import Loader from '../../components/Loader.svelte';
+
 	import { emailStore } from '../../stores/emailStore';
+	import { withLoader } from '$lib/loader';
+	import { isLoading } from '../../stores/loaderStore';
 
-	let username = '';
-	let email = '';
-	let password = '';
-	let message = '';
-	let messageType: 'success' | 'error' = 'success';
+	let username: string = '';
+	let email: string = '';
+	let password: string = '';
+	let message: string = '';
+	let messageType: 'success' | 'error' | 'info' = 'info';
 
-	let showModal = false;
+	let showConfirmEmail: boolean = false;
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (): Promise<void> => {
 		message = '';
-		const result = await registerUser(username, email, password);
+
+		const result = await withLoader(registerUser(username, email, password));
 
 		if (result.success) {
 			messageType = 'success';
 			message = 'Теперь код подтверждения будет отправлен на ваш email!';
 			emailStore.set(email);
-			showModal = true;
+			showConfirmEmail = true;
 		} else {
 			messageType = 'error';
 			message = result.message || 'Ошибка регистрации';
@@ -35,8 +41,8 @@
 
 <Message type={messageType} {message} />
 
-{#if showModal}
-	<ConfirmEmail on:close={() => (showModal = false)} />
+{#if showConfirmEmail}
+	<ConfirmEmail on:close={() => (showConfirmEmail = false)} />
 {/if}
 
 <section class="register-container">
@@ -66,11 +72,17 @@
 			minlength="8"
 			maxlength="32"
 		/>
-		<button class="register-form__button" type="submit">Зарегистрироваться</button>
+		<button class="register-form__button" type="submit" disabled={$isLoading}>
+			Зарегистрироваться
+		</button>
 
 		<p class="register-form__have-acc">Уже зарегистрирован? <a href="/login">Войти</a></p>
 	</form>
 </section>
+
+{#if $isLoading}
+	<Loader />
+{/if}
 
 <style lang="scss">
 	.theme-switcher {
@@ -148,7 +160,7 @@
 						left: 0;
 						bottom: 0;
 						width: 0;
-						height: 2px;
+						height: 1px;
 						background-color: var(--primary-color);
 						transition: width 0.3s ease-in-out;
 					}

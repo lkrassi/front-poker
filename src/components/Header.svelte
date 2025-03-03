@@ -52,7 +52,7 @@
 				left: 0;
 				bottom: 0;
 				width: 0;
-				height: 2px;
+				height: 1px;
 				background-color: var(--text-color);
 				transition: width 0.3s ease-in-out;
 			}
